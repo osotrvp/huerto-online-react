@@ -1,0 +1,24 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+:root {
+  --color-fondo: #F7F7F7;
+  --color-verde: #2E8B57;
+  --color-amarillo: #FFD700;
+  --color-cafe: #8B4513;
+  --color-texto-oscuro: #333333;
+  --color-texto-claro: #666666;
+  --color-blanco: #FFFFFF;
+  --fuente-titulos: 'Playfair Display', serif;
+  --fuente-cuerpo: 'Montserrat', sans-serif;
+}
+
+body {
+  font-family: var(--fuente-cuerpo);
+  background-color: var(--color-fondo);
+  color: var(--color-texto-oscuro);
+}
+
+h1, h2, h3 {
+  font-family: var(--fuente-titulos);
+  color: var(--color-cafe);
+}
