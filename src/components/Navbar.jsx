@@ -34,7 +34,7 @@ function Navbar() {
           <ul className="navbar-nav mx-auto gap-lg-3">
             <li className="nav-item"><Link className="nav-link" to="/">Inicio</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/productos">Productos</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/categorias">Categorías</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/categorias/verduras">Categorías</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/ofertas">Ofertas</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/nosotros">Nosotros</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/blogs">Blog</Link></li>
