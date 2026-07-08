@@ -7,6 +7,7 @@ export function obtenerCarrito() {
 
 export function guardarCarrito(carrito) {
   localStorage.setItem(CLAVE, JSON.stringify(carrito));
+  window.dispatchEvent(new Event("carritoActualizado"));
 }
 
 export function agregarAlCarrito(producto, cantidad) {

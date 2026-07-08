@@ -9,10 +9,16 @@ function Navbar() {
   const [sesion, setSesion] = useState(null);
 
   useEffect(() => {
+  function actualizarCarrito() {
     const carrito = obtenerCarrito();
     setTotalCarrito(carrito.reduce((t, i) => t + i.cantidad, 0));
-    setSesion(obtenerSesion());
-  }, []);
+  }
+  actualizarCarrito();
+  setSesion(obtenerSesion());
+
+  window.addEventListener("carritoActualizado", actualizarCarrito);
+  return () => window.removeEventListener("carritoActualizado", actualizarCarrito);
+}, []);
 
   function handleCerrarSesion() {
     cerrarSesion();
