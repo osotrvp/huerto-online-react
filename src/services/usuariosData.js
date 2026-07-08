@@ -64,3 +64,5 @@ export function eliminarUsuario(id) {
   guardarUsuarios(nuevaLista);
   return nuevaLista;
 }
+
+inicializarUsuarios();

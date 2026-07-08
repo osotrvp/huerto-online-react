@@ -14,6 +14,12 @@ import Nosotros from "./pages/Nosotros";
 import Blogs from "./pages/Blogs";
 import DetalleBlog from "./pages/DetalleBlog";
 import Contacto from "./pages/Contacto";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminProductos from "./pages/admin/AdminProductos";
+import FormularioProducto from "./pages/admin/FormularioProducto";
+import AdminUsuarios from "./pages/admin/AdminUsuarios";
+import FormularioUsuario from "./pages/admin/FormularioUsuario";
+import RutaProtegida from "./components/RutaProtegida";
 import "./App.css";
 
 function App() {
@@ -36,9 +42,16 @@ function App() {
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:id" element={<DetalleBlog />} />
         <Route path="/contacto" element={<Contacto />} />
+
+        <Route path="/admin" element={<RutaProtegida><Dashboard /></RutaProtegida>} />
+        <Route path="/admin/productos" element={<RutaProtegida><AdminProductos /></RutaProtegida>} />
+        <Route path="/admin/productos/nuevo" element={<RutaProtegida><FormularioProducto /></RutaProtegida>} />
+        <Route path="/admin/productos/editar/:id" element={<RutaProtegida><FormularioProducto /></RutaProtegida>} />
+        <Route path="/admin/usuarios" element={<RutaProtegida><AdminUsuarios /></RutaProtegida>} />
+        <Route path="/admin/usuarios/nuevo" element={<RutaProtegida><FormularioUsuario /></RutaProtegida>} />
+        <Route path="/admin/usuarios/editar/:id" element={<RutaProtegida><FormularioUsuario /></RutaProtegida>} />
       </Routes>
     </BrowserRouter>
   );
 }
-
 export default App;
