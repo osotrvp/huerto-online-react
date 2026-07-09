@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { obtenerCarrito } from "../services/carritoData";
 import { obtenerSesion, cerrarSesion } from "../services/authData";
@@ -7,23 +7,30 @@ import logo from "../img/logo.jpg";
 function Navbar() {
   const [totalCarrito, setTotalCarrito] = useState(0);
   const [sesion, setSesion] = useState(null);
+  const [busqueda, setBusqueda] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-  function actualizarCarrito() {
-    const carrito = obtenerCarrito();
-    setTotalCarrito(carrito.reduce((t, i) => t + i.cantidad, 0));
-  }
-  actualizarCarrito();
-  setSesion(obtenerSesion());
+    function actualizarCarrito() {
+      const carrito = obtenerCarrito();
+      setTotalCarrito(carrito.reduce((t, i) => t + i.cantidad, 0));
+    }
+    actualizarCarrito();
+    setSesion(obtenerSesion());
 
-  window.addEventListener("carritoActualizado", actualizarCarrito);
-  return () => window.removeEventListener("carritoActualizado", actualizarCarrito);
-}, []);
+    window.addEventListener("carritoActualizado", actualizarCarrito);
+    return () => window.removeEventListener("carritoActualizado", actualizarCarrito);
+  }, []);
 
   function handleCerrarSesion() {
     cerrarSesion();
     setSesion(null);
     window.location.href = "/";
+  }
+
+  function handleBuscar(e) {
+    e.preventDefault();
+    if (busqueda.trim()) navigate(`/productos?buscar=${encodeURIComponent(busqueda.trim())}`);
   }
 
   return (
@@ -33,6 +40,12 @@ function Navbar() {
           <img src={logo} alt="Logo HuertoHogar" width="40" height="40" />
           HuertoHogar
         </Link>
+
+        <form className="d-none d-lg-flex mx-auto" style={{ maxWidth: "350px" }} onSubmit={handleBuscar}>
+          <input className="form-control me-2" placeholder="Buscar" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
+          <button className="btn btn-outline-success" type="submit">Buscar</button>
+        </form>
+
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
           <span className="navbar-toggler-icon"></span>
         </button>

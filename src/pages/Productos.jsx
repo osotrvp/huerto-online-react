@@ -10,12 +10,16 @@ function Productos() {
   const [productos, setProductos] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const categoriaActiva = searchParams.get("categoria") || "todos";
+  const textoBusqueda = searchParams.get("buscar") || "";
 
   useEffect(() => {
     setProductos(obtenerProductos());
   }, []);
 
-  const filtrados = categoriaActiva === "todos" ? productos : productos.filter((p) => p.categoria === categoriaActiva);
+  let filtrados = categoriaActiva === "todos" ? productos : productos.filter((p) => p.categoria === categoriaActiva);
+if (textoBusqueda) {
+  filtrados = filtrados.filter((p) => p.nombre.toLowerCase().includes(textoBusqueda.toLowerCase()));
+}
 
   return (
     <Layout>
