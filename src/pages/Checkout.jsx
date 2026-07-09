@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import { obtenerCarrito, calcularTotales, vaciarCarrito } from "../services/carritoData";
 import { regiones } from "../services/regionesData";
+import { crearOrden } from "../services/ordenesData";
 
 function Checkout() {
   const [carrito, setCarrito] = useState([]);
@@ -37,21 +38,22 @@ function Checkout() {
   }
 
   function handlePagar() {
-    if (!validar()) return;
+  if (!validar()) return;
 
-    const numeroOrden = Date.now().toString().slice(-8);
-    const exito = Math.random() > 0.2;
+  const numeroOrden = Date.now().toString().slice(-8);
+  const exito = Math.random() > 0.2;
 
-    const datosCompra = { ...form, carrito, total, numeroOrden };
-    sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
+  const datosCompra = { ...form, carrito, total, numeroOrden };
+  sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
 
-    if (exito) {
-      vaciarCarrito();
-      navigate("/compra-exitosa");
-    } else {
-      navigate("/compra-error");
-    }
+  if (exito) {
+    crearOrden(datosCompra);
+    vaciarCarrito();
+    navigate("/compra-exitosa");
+  } else {
+    navigate("/compra-error");
   }
+}
 
   return (
     <Layout>

@@ -21,6 +21,8 @@ import AdminUsuarios from "./pages/admin/AdminUsuarios";
 import FormularioUsuario from "./pages/admin/FormularioUsuario";
 import RutaProtegida from "./components/RutaProtegida";
 import "./App.css";
+import AdminOrdenes from "./pages/admin/AdminOrdenes";
+import DetalleOrden from "./pages/admin/DetalleOrden";
 
 function App() {
   return (
@@ -50,6 +52,8 @@ function App() {
         <Route path="/admin/usuarios" element={<RutaProtegida><AdminUsuarios /></RutaProtegida>} />
         <Route path="/admin/usuarios/nuevo" element={<RutaProtegida><FormularioUsuario /></RutaProtegida>} />
         <Route path="/admin/usuarios/editar/:id" element={<RutaProtegida><FormularioUsuario /></RutaProtegida>} />
+        <Route path="/admin/ordenes" element={<RutaProtegida><AdminOrdenes /></RutaProtegida>} />
+        <Route path="/admin/ordenes/:id" element={<RutaProtegida><DetalleOrden /></RutaProtegida>} />
       </Routes>
     </BrowserRouter>
   );
