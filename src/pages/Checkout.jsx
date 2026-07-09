@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { obtenerCarrito, calcularTotales, vaciarCarrito } from "../services/carritoData";
+import { obtenerCarrito, vaciarCarrito } from "../services/carritoData";
 import { regiones } from "../services/regionesData";
+import { obtenerSesion } from "../services/authData";
 import { crearOrden } from "../services/ordenesData";
+
+const OPCIONES_ENTREGA = [
+  { valor: "estandar", nombre: "Despacho estándar (2-3 días hábiles)", costo: 2990 },
+  { valor: "express", nombre: "Despacho express (24 horas)", costo: 5990 },
+  { valor: "retiro", nombre: "Retiro en tienda (gratis)", costo: 0 }
+];
 
 function Checkout() {
   const [carrito, setCarrito] = useState([]);
-  const [form, setForm] = useState({ nombre: "", apellidos: "", correo: "", calle: "", depto: "", region: "", comuna: "", indicaciones: "" });
+  const [form, setForm] = useState({ nombre: "", apellidos: "", correo: "", calle: "", depto: "", region: "", comuna: "", indicaciones: "", entrega: "estandar" });
   const [errores, setErrores] = useState({});
   const navigate = useNavigate();
 
@@ -15,9 +22,16 @@ function Checkout() {
     const c = obtenerCarrito();
     if (c.length === 0) navigate("/carrito");
     setCarrito(c);
+
+    const sesion = obtenerSesion();
+    if (sesion) {
+      setForm((prev) => ({ ...prev, nombre: sesion.nombre || "", apellidos: sesion.apellido || "", correo: sesion.email || "" }));
+    }
   }, []);
 
-  const { total } = calcularTotales(carrito);
+  const subtotal = carrito.reduce((t, item) => t + item.precio * item.cantidad, 0);
+  const opcionEntrega = OPCIONES_ENTREGA.find((o) => o.valor === form.entrega) || OPCIONES_ENTREGA[0];
+  const total = subtotal + opcionEntrega.costo;
   const comunasDisponibles = regiones.find((r) => r.nombre === form.region)?.comunas || [];
 
   function handleChange(e) {
@@ -38,22 +52,22 @@ function Checkout() {
   }
 
   function handlePagar() {
-  if (!validar()) return;
+    if (!validar()) return;
 
-  const numeroOrden = Date.now().toString().slice(-8);
-  const exito = Math.random() > 0.2;
+    const numeroOrden = Date.now().toString().slice(-8);
+    const exito = Math.random() > 0.2;
 
-  const datosCompra = { ...form, carrito, total, numeroOrden };
-  sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
+    const datosCompra = { ...form, carrito, subtotal, costoEnvio: opcionEntrega.costo, tipoEntrega: opcionEntrega.nombre, total, numeroOrden };
+    sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
 
-  if (exito) {
-    crearOrden(datosCompra);
-    vaciarCarrito();
-    navigate("/compra-exitosa");
-  } else {
-    navigate("/compra-error");
+    if (exito) {
+      crearOrden(datosCompra);
+      vaciarCarrito();
+      navigate("/compra-exitosa");
+    } else {
+      navigate("/compra-error");
+    }
   }
-}
 
   return (
     <Layout>
@@ -125,6 +139,18 @@ function Checkout() {
               <label>Indicaciones para la entrega (opcional)</label>
               <textarea name="indicaciones" className="form-control" rows="3" placeholder="Ej: Entre calles, color del edificio, no tiene timbre." value={form.indicaciones} onChange={handleChange}></textarea>
             </div>
+          </div>
+
+          <h5>Opciones de entrega</h5>
+          <div className="mb-4">
+            {OPCIONES_ENTREGA.map((op) => (
+              <div className="form-check" key={op.valor}>
+                <input className="form-check-input" type="radio" name="entrega" value={op.valor} checked={form.entrega === op.valor} onChange={handleChange} id={`entrega-${op.valor}`} />
+                <label className="form-check-label" htmlFor={`entrega-${op.valor}`}>
+                  {op.nombre} — {op.costo === 0 ? "Gratis" : `$${op.costo.toLocaleString("es-CL")}`}
+                </label>
+              </div>
+            ))}
           </div>
 
           <div className="text-end">
