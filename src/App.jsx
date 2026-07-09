@@ -15,14 +15,18 @@ import Blogs from "./pages/Blogs";
 import DetalleBlog from "./pages/DetalleBlog";
 import Contacto from "./pages/Contacto";
 import Dashboard from "./pages/admin/Dashboard";
-import AdminProductos from "./pages/admin/AdminProductos";
-import FormularioProducto from "./pages/admin/FormularioProducto";
-import AdminUsuarios from "./pages/admin/AdminUsuarios";
-import FormularioUsuario from "./pages/admin/FormularioUsuario";
-import RutaProtegida from "./components/RutaProtegida";
-import "./App.css";
 import AdminOrdenes from "./pages/admin/AdminOrdenes";
 import DetalleOrden from "./pages/admin/DetalleOrden";
+import AdminProductos from "./pages/admin/AdminProductos";
+import FormularioProducto from "./pages/admin/FormularioProducto";
+import ProductosCriticos from "./pages/admin/ProductosCriticos";
+import AdminCategorias from "./pages/admin/AdminCategorias";
+import AdminUsuarios from "./pages/admin/AdminUsuarios";
+import FormularioUsuario from "./pages/admin/FormularioUsuario";
+import Reportes from "./pages/admin/Reportes";
+import Perfil from "./pages/admin/Perfil";
+import RutaProtegida from "./components/RutaProtegida";
+import "./App.css";
 
 function App() {
   return (
@@ -46,14 +50,18 @@ function App() {
         <Route path="/contacto" element={<Contacto />} />
 
         <Route path="/admin" element={<RutaProtegida><Dashboard /></RutaProtegida>} />
+        <Route path="/admin/ordenes" element={<RutaProtegida><AdminOrdenes /></RutaProtegida>} />
+        <Route path="/admin/ordenes/:id" element={<RutaProtegida><DetalleOrden /></RutaProtegida>} />
         <Route path="/admin/productos" element={<RutaProtegida><AdminProductos /></RutaProtegida>} />
         <Route path="/admin/productos/nuevo" element={<RutaProtegida><FormularioProducto /></RutaProtegida>} />
         <Route path="/admin/productos/editar/:id" element={<RutaProtegida><FormularioProducto /></RutaProtegida>} />
+        <Route path="/admin/productos-criticos" element={<RutaProtegida><ProductosCriticos /></RutaProtegida>} />
+        <Route path="/admin/categorias" element={<RutaProtegida><AdminCategorias /></RutaProtegida>} />
         <Route path="/admin/usuarios" element={<RutaProtegida><AdminUsuarios /></RutaProtegida>} />
         <Route path="/admin/usuarios/nuevo" element={<RutaProtegida><FormularioUsuario /></RutaProtegida>} />
         <Route path="/admin/usuarios/editar/:id" element={<RutaProtegida><FormularioUsuario /></RutaProtegida>} />
-        <Route path="/admin/ordenes" element={<RutaProtegida><AdminOrdenes /></RutaProtegida>} />
-        <Route path="/admin/ordenes/:id" element={<RutaProtegida><DetalleOrden /></RutaProtegida>} />
+        <Route path="/admin/reportes" element={<RutaProtegida><Reportes /></RutaProtegida>} />
+        <Route path="/admin/perfil" element={<RutaProtegida><Perfil /></RutaProtegida>} />
       </Routes>
     </BrowserRouter>
   );

@@ -21,9 +21,16 @@ function AdminLayout({ children, titulo }) {
         </div>
         <ul className="nav flex-column gap-1">
           <li><Link to="/admin" className={`nav-link text-white rounded ${esActivo("/admin") ? "bg-success" : ""}`}>📊 Dashboard</Link></li>
-          <li><Link to="/admin/productos" className={`nav-link text-white rounded ${esActivo("/admin/productos") ? "bg-success" : ""}`}>🥦 Productos</Link></li>
           <li><Link to="/admin/ordenes" className={`nav-link text-white rounded ${esActivo("/admin/ordenes") ? "bg-success" : ""}`}>🧾 Órdenes</Link></li>
+          <li><Link to="/admin/productos" className={`nav-link text-white rounded ${esActivo("/admin/productos") ? "bg-success" : ""}`}>🥦 Productos</Link></li>
+          <li><Link to="/admin/productos-criticos" className={`nav-link text-white rounded ${esActivo("/admin/productos-criticos") ? "bg-success" : ""}`}>⚠️ Stock crítico</Link></li>
+          <li><Link to="/admin/categorias" className={`nav-link text-white rounded ${esActivo("/admin/categorias") ? "bg-success" : ""}`}>🏷️ Categorías</Link></li>
           <li><Link to="/admin/usuarios" className={`nav-link text-white rounded ${esActivo("/admin/usuarios") ? "bg-success" : ""}`}>👤 Usuarios</Link></li>
+          <li><Link to="/admin/reportes" className={`nav-link text-white rounded ${esActivo("/admin/reportes") ? "bg-success" : ""}`}>📈 Reportes</Link></li>
+          <li><Link to="/admin/perfil" className={`nav-link text-white rounded ${esActivo("/admin/perfil") ? "bg-success" : ""}`}>😊 Perfil</Link></li>
+        </ul>
+        <hr className="border-secondary" />
+        <ul className="nav flex-column gap-1">
           <li><Link to="/" className="nav-link text-white rounded">🔙 Volver al sitio</Link></li>
           <li><button onClick={handleCerrarSesion} className="nav-link text-white rounded btn btn-link text-start w-100">🚪 Cerrar sesión</button></li>
         </ul>
