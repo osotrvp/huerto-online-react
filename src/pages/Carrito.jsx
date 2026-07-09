@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
-import { obtenerCarrito, cambiarCantidad, eliminarDelCarrito, calcularTotales } from "../services/carritoData";
+import { obtenerCarrito, cambiarCantidad, eliminarDelCarrito, vaciarCarrito, calcularTotales, agregarAlCarrito } from "../services/carritoData";
+import { obtenerProductos } from "../services/productosData";
 
 const CUPONES = { HUERTO10: 0.1, BIENVENIDO: 0.05 };
 
 function Carrito() {
   const [carrito, setCarrito] = useState([]);
+  const [productos, setProductos] = useState([]);
   const [codigoCupon, setCodigoCupon] = useState("");
   const [descuento, setDescuento] = useState(0);
   const [mensajeCupon, setMensajeCupon] = useState("");
@@ -14,6 +16,7 @@ function Carrito() {
 
   useEffect(() => {
     setCarrito(obtenerCarrito());
+    setProductos(obtenerProductos());
   }, []);
 
   function handleCambiarCantidad(id, cantidad) {
@@ -22,6 +25,14 @@ function Carrito() {
 
   function handleEliminar(id) {
     setCarrito(eliminarDelCarrito(id));
+  }
+
+  function handleLimpiar() {
+    setCarrito(vaciarCarrito());
+  }
+
+  function handleAnadir(producto) {
+    setCarrito(agregarAlCarrito(producto, 1));
   }
 
   function handleAplicarCupon() {
@@ -40,65 +51,81 @@ function Carrito() {
   return (
     <Layout>
       <div className="container py-5">
-        <h1 className="text-center mb-4">Mi Carrito</h1>
+        <h1 className="mb-4">Carrito de Compras</h1>
 
-        {carrito.length === 0 ? (
-          <div className="text-center py-5">
-            <p className="fs-5 text-muted">😕 Tu carrito está vacío.</p>
-            <Link to="/productos" className="btn btn-success">Ver productos</Link>
-          </div>
-        ) : (
-          <div className="row g-4">
-            <div className="col-lg-8">
-              <div className="bg-white rounded-4 shadow-sm p-4">
-                {carrito.map((item) => {
-                  const imagen = new URL(`../img/${item.imagen}`, import.meta.url).href;
-                  return (
-                    <div key={item.id} className="d-flex align-items-center gap-3 py-3 border-bottom">
-                      <img src={imagen} alt={item.nombre} width="70" height="70" className="rounded-3" style={{ objectFit: "cover" }} />
-                      <div className="flex-grow-1">
-                        <h6 className="mb-0">{item.nombre}</h6>
-                        <small className="text-muted">${item.precio.toLocaleString("es-CL")} c/u</small>
+        <div className="row g-4">
+          <div className="col-lg-6">
+            <h4 className="mb-3">Lista de productos</h4>
+            <div className="row row-cols-2 g-3" style={{ maxHeight: "600px", overflowY: "auto" }}>
+              {productos.map((p) => {
+                const imagen = new URL(`../img/${p.imagen}`, import.meta.url).href;
+                const precioFinal = p.oferta ? p.precioOferta : p.precio;
+                return (
+                  <div className="col" key={p.id}>
+                    <div className="card h-100 shadow-sm">
+                      <img src={imagen} className="card-img-top" style={{ height: "110px", objectFit: "cover" }} alt={p.nombre} />
+                      <div className="card-body p-2">
+                        <p className="small mb-1">{p.nombre}</p>
+                        <p className="fw-bold small mb-2" style={{ color: "var(--color-verde)" }}>${precioFinal.toLocaleString("es-CL")}</p>
+                        <p className="small text-muted mb-2">Stock: {p.stock}</p>
+                        <button className="btn btn-dark btn-sm w-100" onClick={() => handleAnadir(p)}>Añadir</button>
                       </div>
-                      <div className="d-flex align-items-center gap-2">
-                        <button className="btn btn-sm btn-outline-secondary" onClick={() => handleCambiarCantidad(item.id, item.cantidad - 1)}>-</button>
-                        <span>{item.cantidad}</span>
-                        <button className="btn btn-sm btn-outline-secondary" onClick={() => handleCambiarCantidad(item.id, item.cantidad + 1)}>+</button>
-                      </div>
-                      <span className="fw-bold" style={{ color: "var(--color-verde)", minWidth: "80px" }}>${(item.precio * item.cantidad).toLocaleString("es-CL")}</span>
-                      <button className="btn btn-sm" onClick={() => handleEliminar(item.id)}>🗑️</button>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="col-lg-4">
-              <div className="bg-white rounded-4 shadow-sm p-4">
-                <h4>Resumen del pedido</h4>
-                <div className="d-flex justify-content-between mb-2"><span>Subtotal</span><span>${subtotal.toLocaleString("es-CL")}</span></div>
-                <div className="d-flex justify-content-between mb-2"><span>Despacho</span><span>${despacho.toLocaleString("es-CL")}</span></div>
-                {montoDescuento > 0 && (
-                  <div className="d-flex justify-content-between mb-2" style={{ color: "var(--color-verde)" }}>
-                    <span>Descuento</span><span>-${montoDescuento.toLocaleString("es-CL")}</span>
                   </div>
-                )}
-                <hr />
-                <div className="d-flex justify-content-between fs-5 fw-bold mb-3"><span>Total</span><span>${total.toLocaleString("es-CL")}</span></div>
+                );
+              })}
+            </div>
+          </div>
 
+          <div className="col-lg-6">
+            <h4 className="mb-3">Carrito de Compras</h4>
+            {carrito.length === 0 ? (
+              <div className="bg-white rounded-4 shadow-sm p-5 text-center">
+                <p className="fs-5 text-muted">😕 Tu carrito está vacío.</p>
+                <Link to="/productos" className="btn btn-success">Ver productos</Link>
+              </div>
+            ) : (
+              <div className="bg-white rounded-4 shadow-sm p-3">
+                <table className="table align-middle">
+                  <thead><tr><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr></thead>
+                  <tbody>
+                    {carrito.map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.nombre}</td>
+                        <td>${item.precio.toLocaleString("es-CL")}</td>
+                        <td>
+                          <div className="d-flex align-items-center gap-1">
+                            <button className="btn btn-sm btn-outline-secondary" onClick={() => handleCambiarCantidad(item.id, item.cantidad - 1)}>-</button>
+                            <span>{item.cantidad}</span>
+                            <button className="btn btn-sm btn-outline-secondary" onClick={() => handleCambiarCantidad(item.id, item.cantidad + 1)}>+</button>
+                          </div>
+                        </td>
+                        <td>${(item.precio * item.cantidad).toLocaleString("es-CL")}</td>
+                        <td><button className="btn btn-sm btn-danger" onClick={() => handleEliminar(item.id)}>Eliminar</button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="text-end fw-bold fs-5 mb-3">Total: ${subtotal.toLocaleString("es-CL")}</div>
+                <div className="d-flex gap-2 mb-3">
+                  <button className="btn btn-secondary" onClick={handleLimpiar}>Limpiar</button>
+                  <button className="btn btn-success flex-grow-1" onClick={() => navigate("/checkout")}>Comprar ahora</button>
+                </div>
+
+                <hr />
                 <label className="small fw-bold">¿Tienes un cupón?</label>
                 <div className="d-flex gap-2 mb-2">
                   <input type="text" className="form-control" placeholder="Ingresa tu código" value={codigoCupon} onChange={(e) => setCodigoCupon(e.target.value)} />
                   <button className="btn btn-dark" onClick={handleAplicarCupon}>Aplicar</button>
                 </div>
                 {mensajeCupon && <p className="small">{mensajeCupon}</p>}
-
-                <button className="btn btn-success w-100 mt-3" onClick={() => navigate("/checkout")}>Finalizar compra</button>
-                <Link to="/productos" className="d-block text-center mt-2" style={{ color: "var(--color-verde)" }}>← Seguir comprando</Link>
+                <div className="d-flex justify-content-between small"><span>Despacho</span><span>${despacho.toLocaleString("es-CL")}</span></div>
+                {montoDescuento > 0 && <div className="d-flex justify-content-between small" style={{ color: "var(--color-verde)" }}><span>Descuento</span><span>-${montoDescuento.toLocaleString("es-CL")}</span></div>}
+                <div className="d-flex justify-content-between fw-bold mt-2"><span>Total final</span><span>${total.toLocaleString("es-CL")}</span></div>
               </div>
-            </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </Layout>
   );
