@@ -31,3 +31,9 @@ export function eliminarCategoria(id) {
   guardarCategorias(nuevaLista);
   return nuevaLista;
 }
+
+export function actualizarCategoria(id, datos) {
+  const lista = obtenerCategorias().map((c) => (c.id === id ? { ...c, ...datos } : c));
+  guardarCategorias(lista);
+  return lista;
+}

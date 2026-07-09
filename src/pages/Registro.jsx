@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import { agregarUsuario, existeCorreoUsuario } from "../services/usuariosData";
 import { regiones } from "../services/regionesData";
+import { obtenerSesion } from "../services/authData";
 
 function Registro() {
   const [form, setForm] = useState({ nombre: "", apellido: "", rut: "", email: "", region: "", comuna: "", direccion: "", password: "", confirmarPassword: "", terminos: false });
   const [errores, setErrores] = useState({});
   const [mensaje, setMensaje] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const sesion = obtenerSesion();
+    if (sesion) navigate(sesion.rol === "admin" || sesion.rol === "vendedor" ? "/admin" : "/");
+  }, []);
 
   const comunasDisponibles = regiones.find((r) => r.nombre === form.region)?.comunas || [];
 

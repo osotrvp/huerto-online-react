@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import { buscarUsuarioPorCredenciales } from "../services/usuariosData";
-import { iniciarSesion } from "../services/authData";
+import { iniciarSesion, obtenerSesion } from "../services/authData";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [errores, setErrores] = useState({});
   const [mensaje, setMensaje] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const sesion = obtenerSesion();
+    if (sesion) navigate(sesion.rol === "admin" || sesion.rol === "vendedor" ? "/admin" : "/");
+  }, []);
 
   function handleChange(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

@@ -43,6 +43,7 @@ function AdminUsuarios() {
                 <td className="text-capitalize">{u.rol}</td>
                 <td><span className={`badge ${u.estado === "activo" ? "bg-success-subtle text-success" : "bg-secondary-subtle text-secondary"}`}>{u.estado}</span></td>
                 <td>
+                  <Link to={`/admin/usuarios/${u.id}`} className="btn btn-sm btn-outline-primary me-2">Ver</Link>
                   <Link to={`/admin/usuarios/editar/${u.id}`} className="btn btn-sm btn-outline-secondary me-2">Editar</Link>
                   <button className="btn btn-sm btn-danger" onClick={() => setIdAEliminar(u.id)}>Eliminar</button>
                 </td>

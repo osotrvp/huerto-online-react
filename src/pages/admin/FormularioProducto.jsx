@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import AdminLayout from "../../components/AdminLayout";
 import { obtenerProductoPorId, crearProducto, actualizarProducto } from "../../services/productosData";
+import { obtenerCategorias } from "../../services/categoriasData";
 
 function FormularioProducto() {
   const { id } = useParams();
@@ -10,8 +11,10 @@ function FormularioProducto() {
 
   const [form, setForm] = useState({ nombre: "", categoria: "", precio: "", stock: "", imagen: "", descripcion: "", origen: "", destacado: false, oferta: false, precioOferta: "" });
   const [errores, setErrores] = useState({});
+  const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
+    setCategorias(obtenerCategorias());
     if (esEdicion) {
       const p = obtenerProductoPorId(id);
       if (p) setForm({ ...p, precioOferta: p.precioOferta || "" });
@@ -59,10 +62,7 @@ function FormularioProducto() {
               <label>Categoría</label>
               <select name="categoria" className={`form-select ${errores.categoria ? "is-invalid" : ""}`} value={form.categoria} onChange={handleChange}>
                 <option value="">Seleccione</option>
-                <option value="verduras">Verduras</option>
-                <option value="frutas">Frutas</option>
-                <option value="hierbas">Hierbas</option>
-                <option value="otros">Otros</option>
+                {categorias.map((c) => <option key={c.id} value={c.valor}>{c.nombre}</option>)}
               </select>
             </div>
             <div className="col-md-6">
