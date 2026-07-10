@@ -25,8 +25,8 @@ function Footer() {
           <p>✉️ contacto@huerthogar.cl</p>
         </div>
       </div>
-      <div className="text-center py-3 border-top border-secondary">
-        <small>&copy; 2026 HuertoHogar. Todos los derechos reservados. | <Link to="/admin" className="text-white">Panel Administrador</Link></small>
+      <div className="text-center py-3" style={{ backgroundColor: "var(--color-cafe-oscuro)" }}>
+        &copy; {new Date().getFullYear()} HuertoHogar. Todos los derechos reservados.
       </div>
     </footer>
   );
