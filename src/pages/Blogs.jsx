@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { obtenerBlogs } from "../services/blogsData";
+import { obtenerBlogs } from "../services/BlogsData";
 
 const CATEGORIAS = ["todos", "recetas", "consejos", "noticias", "agricultura"];
 

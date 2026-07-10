@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import { obtenerBlogPorId } from "../services/blogsData";
+import { obtenerBlogPorId } from "../services/BlogsData";
 
 function DetalleBlog() {
   const { id } = useParams();

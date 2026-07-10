@@ -177,9 +177,12 @@ function Navbar() {
 
           {/* Carrito */}
 
-          <Link
-            to="/carrito"
+          <button
+            type="button"
             className="btn btn-outline-success position-relative rounded-circle"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#carritoDrawer"
+            aria-label="Abrir carrito"
           >
 
             <i className="bi bi-cart3 fs-5"></i>
@@ -192,7 +195,7 @@ function Navbar() {
 
             </span>
 
-          </Link>
+          </button>
 
         </div>
 

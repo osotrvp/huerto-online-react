@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import CardProducto from "../components/CardProducto";
 import { obtenerProductos } from "../services/productosData";
+import hero from "../assets/hero.png";
 
 function Home() {
   const [destacados, setDestacados] = useState([]);
@@ -15,12 +16,23 @@ function Home() {
   return (
     <Layout>
       <div className="container py-4">
-        <div className="rounded-4 p-5 text-center text-white mb-5" style={{ background: "linear-gradient(135deg, #2E8B57, #1f6b41)" }}>
-          <h1 className="text-white display-5 fw-bold">Del campo a tu mesa</h1>
-          <p className="lead">Productos orgánicos frescos, cultivados con amor y entregados directamente a tu hogar.</p>
-          <Link to="/productos" className="btn btn-lg fw-bold" style={{ backgroundColor: "var(--color-amarillo)" }}>
-            Ver productos
-          </Link>
+        <div
+          className="hero-home p-5 mb-5 text-white fade-in"
+          style={{ backgroundImage: `url(${hero})` }}
+        >
+          <div className="hero-content text-center">
+            <h1 className="text-white display-4 fw-bold mb-3">Del campo a tu mesa</h1>
+            <p className="lead mb-4">
+              Productos orgánicos frescos, cultivados con amor y entregados directamente a tu hogar.
+            </p>
+            <Link
+              to="/productos"
+              className="btn btn-lg fw-bold px-4 btn-agregar"
+              style={{ backgroundColor: "var(--color-amarillo)" }}
+            >
+              Ver productos
+            </Link>
+          </div>
         </div>
 
         <div className="text-center mb-4">
@@ -28,8 +40,8 @@ function Home() {
           <p className="text-muted">Lo mejor de nuestra temporada</p>
         </div>
         <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-4">
-          {destacados.map((producto) => (
-            <CardProducto key={producto.id} producto={producto} />
+          {destacados.map((producto, i) => (
+            <CardProducto key={producto.id} producto={producto} delay={i * 0.08} />
           ))}
         </div>
         <div className="text-center">

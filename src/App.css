@@ -3,8 +3,10 @@
 :root {
   --color-fondo: #F7F7F7;
   --color-verde: #2E8B57;
+  --color-verde-oscuro: #1f6b41;
   --color-amarillo: #FFD700;
   --color-cafe: #8B4513;
+  --color-cafe-oscuro: #5c2e0a;
   --color-texto-oscuro: #333333;
   --color-texto-claro: #666666;
   --color-blanco: #FFFFFF;
@@ -21,4 +23,110 @@ body {
 h1, h2, h3 {
   font-family: var(--fuente-titulos);
   color: var(--color-cafe);
+}
+
+/* ===== Animaciones ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease both;
+}
+
+.zoom-in {
+  animation: zoomIn 0.55s ease both;
+}
+
+/* ===== Hero ===== */
+.hero-home {
+  position: relative;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(46, 139, 87, 0.88), rgba(31, 107, 65, 0.88));
+}
+
+.hero-home .hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* ===== Cards de producto ===== */
+.card-producto {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-producto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12) !important;
+}
+
+.card-producto .img-wrap {
+  overflow: hidden;
+}
+
+.card-producto .img-wrap img {
+  transition: transform 0.45s ease;
+}
+
+.card-producto:hover .img-wrap img {
+  transform: scale(1.08);
+}
+
+.btn-agregar {
+  transition: background-color 0.25s ease, transform 0.2s ease, color 0.25s ease;
+}
+
+.btn-agregar:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+
+/* ===== Carrito lateral ===== */
+.carrito-item {
+  transition: background-color 0.2s ease;
+}
+
+.carrito-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* ===== Footer ===== */
+.footer-link {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.footer-link:hover {
+  color: var(--color-amarillo);
+  padding-left: 4px;
+}
+
+.footer-social {
+  display: inline-flex;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-social:hover {
+  color: var(--color-amarillo) !important;
+  transform: translateY(-3px);
 }
