@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Offcanvas } from "bootstrap";
 import {
   obtenerCarrito,
   cambiarCantidad,
@@ -9,6 +10,7 @@ import {
 
 function CarritoDrawer() {
   const [carrito, setCarrito] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function actualizar() {
@@ -23,6 +25,26 @@ function CarritoDrawer() {
 
   function imagenDe(item) {
     return new URL(`../img/${item.imagen}`, import.meta.url).href;
+  }
+
+  function irA(ruta) {
+    const el = document.getElementById("carritoDrawer");
+
+    if (el) {
+      const instancia = Offcanvas.getInstance(el);
+      if (instancia) instancia.dispose();
+      el.classList.remove("show");
+    }
+
+    // Limpieza forzada: al navegar, React desmonta el panel antes de que
+    // Bootstrap alcance a terminar su animación de cierre, dejando el
+    // fondo oscuro (backdrop) pegado en pantalla. Lo removemos a mano.
+    document.querySelectorAll(".offcanvas-backdrop").forEach((bd) => bd.remove());
+    document.body.classList.remove("offcanvas-backdrop");
+    document.body.style.overflow = "";
+    document.body.style.paddingRight = "";
+
+    navigate(ruta);
   }
 
   return (
@@ -100,20 +122,20 @@ function CarritoDrawer() {
                   ${subtotal.toLocaleString("es-CL")}
                 </span>
               </div>
-              <Link
-                to="/carrito"
+              <button
+                type="button"
                 className="btn btn-outline-success w-100 mb-2"
-                data-bs-dismiss="offcanvas"
+                onClick={() => irA("/carrito")}
               >
                 Ver carrito completo
-              </Link>
-              <Link
-                to="/checkout"
+              </button>
+              <button
+                type="button"
                 className="btn btn-success w-100 btn-agregar"
-                data-bs-dismiss="offcanvas"
+                onClick={() => irA("/checkout")}
               >
                 Iniciar compra
-              </Link>
+              </button>
             </div>
           </>
         )}

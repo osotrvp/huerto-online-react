@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { agregarAlCarrito } from "../services/carritoData";
+import { agregarAlCarrito, obtenerCarrito } from "../services/carritoData";
 
 function CardProducto({ producto, delay = 0 }) {
   const [agregado, setAgregado] = useState(false);
@@ -10,9 +10,21 @@ function CardProducto({ producto, delay = 0 }) {
   function handleAgregar(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    const existente = obtenerCarrito().find((item) => item.id === producto.id);
+    const cantidadActual = existente ? existente.cantidad : 0;
+
     agregarAlCarrito(producto, 1);
-    setAgregado(true);
-    setTimeout(() => setAgregado(false), 1200);
+
+    if (cantidadActual < producto.stock) {
+      window.dispatchEvent(
+        new CustomEvent("carritoToast", {
+          detail: { mensaje: `${producto.nombre} se agregó al carrito` },
+        })
+      );
+      setAgregado(true);
+      setTimeout(() => setAgregado(false), 1200);
+    }
   }
 
   return (

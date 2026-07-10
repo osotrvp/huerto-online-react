@@ -130,3 +130,13 @@ h1, h2, h3 {
   color: var(--color-amarillo) !important;
   transform: translateY(-3px);
 }
+
+/* ===== Toast de notificación ===== */
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.toast-slide-in {
+  animation: toastSlideIn 0.35s ease both;
+}

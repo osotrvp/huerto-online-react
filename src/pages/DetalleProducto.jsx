@@ -34,6 +34,11 @@ function DetalleProducto() {
     }
     agregarAlCarrito(producto, cantidad);
     setMensaje(true);
+    window.dispatchEvent(
+      new CustomEvent("carritoToast", {
+        detail: { mensaje: `${producto.nombre} se agregó al carrito` },
+      })
+    );
     setTimeout(() => setMensaje(false), 2500);
   }
 
