@@ -36,7 +36,7 @@ function Blogs() {
           <Link to={`/blogs/${destacado.id}`} className="d-block mb-5 text-decoration-none text-dark">
             <div className="row bg-white rounded-4 shadow-sm overflow-hidden g-0">
               <div className="col-md-6">
-                <img src={new URL(`../img/${destacado.imagen}`, import.meta.url).href} className="w-100 h-100" style={{ objectFit: "cover" }} alt={destacado.titulo} />
+               <img src={new URL(`../img/${destacado.imagen}`, import.meta.url).href} className="w-100" style={{ height: "320px", objectFit: "cover" }} alt={destacado.titulo} />
               </div>
               <div className="col-md-6 p-4">
                 <span className="badge mb-2" style={{ backgroundColor: "#e8f3ec", color: "var(--color-verde)" }}>{destacado.categoria}</span>

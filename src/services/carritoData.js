@@ -13,6 +13,13 @@ export function guardarCarrito(carrito) {
 export function agregarAlCarrito(producto, cantidad) {
   const carrito = obtenerCarrito();
   const existente = carrito.find(item => item.id === producto.id);
+  const cantidadActual = existente ? existente.cantidad : 0;
+
+  if (cantidadActual + cantidad > producto.stock) {
+    alert(`Solo quedan ${producto.stock - cantidadActual} unidades disponibles de ${producto.nombre}`);
+    return carrito;
+  }
+
   if (existente) {
     existente.cantidad += cantidad;
   } else {
@@ -21,6 +28,7 @@ export function agregarAlCarrito(producto, cantidad) {
       nombre: producto.nombre,
       precio: producto.oferta ? producto.precioOferta : producto.precio,
       imagen: producto.imagen,
+      stock: producto.stock,
       cantidad
     });
   }
@@ -28,10 +36,16 @@ export function agregarAlCarrito(producto, cantidad) {
   return carrito;
 }
 
+
 export function cambiarCantidad(id, cantidad) {
   let carrito = obtenerCarrito();
+  const item = carrito.find((i) => i.id === id);
+
   if (cantidad < 1) {
     carrito = carrito.filter(item => item.id !== id);
+  } else if (item && cantidad > item.stock) {
+    alert(`Solo quedan ${item.stock} unidades disponibles`);
+    return carrito;
   } else {
     carrito = carrito.map(item => (item.id === id ? { ...item, cantidad } : item));
   }
