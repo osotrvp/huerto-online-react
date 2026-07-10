@@ -5,6 +5,7 @@ import { obtenerCarrito, vaciarCarrito } from "../services/carritoData";
 import { regiones } from "../services/regionesData";
 import { obtenerSesion } from "../services/authData";
 import { crearOrden } from "../services/ordenesData";
+import { obtenerProductos, actualizarProducto } from "../services/productosData";
 
 const OPCIONES_ENTREGA = [
   { valor: "estandar", nombre: "Despacho estándar (2-3 días hábiles)", costo: 2990 },
@@ -52,22 +53,28 @@ function Checkout() {
   }
 
   function handlePagar() {
-    if (!validar()) return;
+  if (!validar()) return;
 
-    const numeroOrden = Date.now().toString().slice(-8);
-    const exito = Math.random() > 0.2;
+  const numeroOrden = Date.now().toString().slice(-8);
+  const exito = Math.random() > 0.2;
 
-    const datosCompra = { ...form, carrito, subtotal, costoEnvio: opcionEntrega.costo, tipoEntrega: opcionEntrega.nombre, total, numeroOrden };
-    sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
+  const datosCompra = { ...form, carrito, subtotal, costoEnvio: opcionEntrega.costo, tipoEntrega: opcionEntrega.nombre, total, numeroOrden };
+  sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
 
-    if (exito) {
-      crearOrden(datosCompra);
-      vaciarCarrito();
-      navigate("/compra-exitosa");
-    } else {
-      navigate("/compra-error");
-    }
+  if (exito) {
+    const productos = obtenerProductos();
+    carrito.forEach((item) => {
+      const producto = productos.find((p) => p.id === item.id);
+      if (producto) actualizarProducto(producto.id, { stock: Math.max(0, producto.stock - item.cantidad) });
+    });
+
+    crearOrden(datosCompra);
+    vaciarCarrito();
+    navigate("/compra-exitosa");
+  } else {
+    navigate("/compra-error");
   }
+}
 
   return (
     <Layout>
