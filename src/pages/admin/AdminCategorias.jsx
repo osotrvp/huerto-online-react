@@ -67,22 +67,24 @@ function AdminCategorias() {
         <div className="col-md-7">
           <div className="bg-white rounded-4 shadow-sm p-4">
             <h5>Categorías actuales</h5>
-            <table className="table">
-              <thead><tr><th>Icono</th><th>Nombre</th><th>Valor</th><th></th></tr></thead>
-              <tbody>
-                {categorias.map((c) => (
-                  <tr key={c.id}>
-                    <td>{c.icono}</td>
-                    <td>{c.nombre}</td>
-                    <td>{c.valor}</td>
-                    <td>
-                      <button className="btn btn-sm btn-outline-secondary me-2" onClick={() => handleEditar(c)}>Editar</button>
-                      <button className="btn btn-sm btn-danger" onClick={() => handleEliminar(c.id)}>Eliminar</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="table-responsive">
+              <table className="table">
+                <thead><tr><th>Icono</th><th>Nombre</th><th>Valor</th><th></th></tr></thead>
+                <tbody>
+                  {categorias.map((c) => (
+                    <tr key={c.id}>
+                      <td>{c.icono}</td>
+                      <td>{c.nombre}</td>
+                      <td>{c.valor}</td>
+                      <td>
+                        <button className="btn btn-sm btn-outline-secondary me-2" onClick={() => handleEditar(c)}>Editar</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => handleEliminar(c.id)}>Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

@@ -24,8 +24,8 @@ function AdminProductos() {
 
   return (
     <AdminLayout titulo="Gestión de Productos">
-      <div className="d-flex gap-2 mb-3">
-        <input className="form-control" placeholder="Buscar producto..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
+      <div className="d-flex flex-wrap gap-2 mb-3">
+        <input className="form-control" style={{ minWidth: "180px", flex: "1 1 200px" }} placeholder="Buscar producto..." value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
         <select className="form-select" style={{ width: "200px" }} value={categoria} onChange={(e) => setCategoria(e.target.value)}>
           <option value="todos">Todas las categorías</option>
           <option value="verduras">Verduras</option>
@@ -37,24 +37,26 @@ function AdminProductos() {
       </div>
 
       <div className="bg-white rounded-4 shadow-sm p-4">
-        <table className="table">
-          <thead><tr><th>ID</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
-          <tbody>
-            {filtrados.map((p) => (
-              <tr key={p.id}>
-                <td>{p.id}</td>
-                <td>{p.nombre}</td>
-                <td>{p.categoria}</td>
-                <td>${p.precio.toLocaleString("es-CL")}</td>
-                <td>{p.stock}</td>
-                <td>
-                  <Link to={`/admin/productos/editar/${p.id}`} className="btn btn-sm btn-outline-secondary me-2">Editar</Link>
-                  <button className="btn btn-sm btn-danger" onClick={() => setIdAEliminar(p.id)}>Eliminar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="table-responsive">
+          <table className="table">
+            <thead><tr><th>ID</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr></thead>
+            <tbody>
+              {filtrados.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+                  <td>{p.nombre}</td>
+                  <td>{p.categoria}</td>
+                  <td>${p.precio.toLocaleString("es-CL")}</td>
+                  <td>{p.stock}</td>
+                  <td>
+                    <Link to={`/admin/productos/editar/${p.id}`} className="btn btn-sm btn-outline-secondary me-2">Editar</Link>
+                    <button className="btn btn-sm btn-danger" onClick={() => setIdAEliminar(p.id)}>Eliminar</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {filtrados.length === 0 && <p className="text-muted text-center">No se encontraron productos.</p>}
       </div>
 
