@@ -17,7 +17,7 @@ export function agregarAlCarrito(producto, cantidad) {
 
   if (cantidadActual + cantidad > producto.stock) {
     alert(`Solo quedan ${producto.stock - cantidadActual} unidades disponibles de ${producto.nombre}`);
-    return carrito;
+    return null;
   }
 
   if (existente) {

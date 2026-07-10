@@ -28,19 +28,21 @@ function DetalleProducto() {
   const precioFinal = producto.oferta ? producto.precioOferta : producto.precio;
 
   function handleAgregar() {
-    if (cantidad < 1 || cantidad > producto.stock) {
-      alert(`Ingresa una cantidad entre 1 y ${producto.stock}`);
-      return;
-    }
-    agregarAlCarrito(producto, cantidad);
-    setMensaje(true);
-    window.dispatchEvent(
-      new CustomEvent("carritoToast", {
-        detail: { mensaje: `${producto.nombre} se agregó al carrito` },
-      })
-    );
-    setTimeout(() => setMensaje(false), 2500);
+  if (cantidad < 1 || cantidad > producto.stock) {
+    alert(`Ingresa una cantidad entre 1 y ${producto.stock}`);
+    return;
   }
+  const resultado = agregarAlCarrito(producto, cantidad);
+  if (!resultado) return;
+
+  setMensaje(true);
+  window.dispatchEvent(
+    new CustomEvent("carritoToast", {
+      detail: { mensaje: `${producto.nombre} se agregó al carrito` },
+    })
+  );
+  setTimeout(() => setMensaje(false), 2500);
+}
 
   return (
     <Layout>

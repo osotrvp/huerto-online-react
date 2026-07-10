@@ -8,24 +8,20 @@ function CardProducto({ producto, delay = 0 }) {
   const precioFinal = producto.oferta ? producto.precioOferta : producto.precio;
 
   function handleAgregar(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
 
-    const existente = obtenerCarrito().find((item) => item.id === producto.id);
-    const cantidadActual = existente ? existente.cantidad : 0;
+  const resultado = agregarAlCarrito(producto, 1);
+  if (!resultado) return;
 
-    agregarAlCarrito(producto, 1);
-
-    if (cantidadActual < producto.stock) {
-      window.dispatchEvent(
-        new CustomEvent("carritoToast", {
-          detail: { mensaje: `${producto.nombre} se agregó al carrito` },
-        })
-      );
-      setAgregado(true);
-      setTimeout(() => setAgregado(false), 1200);
-    }
-  }
+  window.dispatchEvent(
+    new CustomEvent("carritoToast", {
+      detail: { mensaje: `${producto.nombre} se agregó al carrito` },
+    })
+  );
+  setAgregado(true);
+  setTimeout(() => setAgregado(false), 1200);
+}
 
   return (
     <div className="col">

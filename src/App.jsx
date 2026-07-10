@@ -28,6 +28,7 @@ import Perfil from "./pages/admin/Perfil";
 import RutaProtegida from "./components/RutaProtegida";
 import "./App.css";
 import DetalleUsuario from "./pages/admin/DetalleUsuario";
+import PerfilCliente from "./pages/Perfil";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blogs/:id" element={<DetalleBlog />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/perfil" element={<PerfilCliente />} />
 
         <Route path="/admin" element={<RutaProtegida><Dashboard /></RutaProtegida>} />
         <Route path="/admin/ordenes" element={<RutaProtegida><AdminOrdenes /></RutaProtegida>} />
