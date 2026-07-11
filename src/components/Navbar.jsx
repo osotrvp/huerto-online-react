@@ -140,6 +140,17 @@ function Navbar() {
                     </Link>
                   </li>
 
+                  {(sesion.rol === "admin" || sesion.rol === "vendedor") && (
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to="/admin"
+                      >
+                        Panel Administrador
+                      </Link>
+                    </li>
+                  )}
+
                   <li>
                     <button
                       className="dropdown-item"
