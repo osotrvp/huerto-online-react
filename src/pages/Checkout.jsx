@@ -53,28 +53,28 @@ function Checkout() {
   }
 
   function handlePagar() {
-  if (!validar()) return;
+    if (!validar()) return;
 
-  const numeroOrden = Date.now().toString().slice(-8);
-  const exito = Math.random() > 0.2;
+    const numeroOrden = Date.now().toString().slice(-8);
+    const exito = Math.random() > 0.2;
 
-  const datosCompra = { ...form, carrito, subtotal, costoEnvio: opcionEntrega.costo, tipoEntrega: opcionEntrega.nombre, total, numeroOrden };
-  sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
+    const datosCompra = { ...form, carrito, subtotal, costoEnvio: opcionEntrega.costo, tipoEntrega: opcionEntrega.nombre, total, numeroOrden };
+    sessionStorage.setItem("ultimaCompra", JSON.stringify(datosCompra));
 
-  if (exito) {
-    const productos = obtenerProductos();
-    carrito.forEach((item) => {
-      const producto = productos.find((p) => p.id === item.id);
-      if (producto) actualizarProducto(producto.id, { stock: Math.max(0, producto.stock - item.cantidad) });
-    });
+    if (exito) {
+      const productos = obtenerProductos();
+      carrito.forEach((item) => {
+        const producto = productos.find((p) => p.id === item.id);
+        if (producto) actualizarProducto(producto.id, { stock: Math.max(0, producto.stock - item.cantidad) });
+      });
 
-    crearOrden(datosCompra);
-    vaciarCarrito();
-    navigate("/compra-exitosa");
-  } else {
-    navigate("/compra-error");
+      crearOrden(datosCompra);
+      vaciarCarrito();
+      navigate("/compra-exitosa");
+    } else {
+      navigate("/compra-error");
+    }
   }
-}
 
   return (
     <Layout>
@@ -88,19 +88,21 @@ function Checkout() {
             <span className="btn btn-primary">Total a pagar: ${total.toLocaleString("es-CL")}</span>
           </div>
 
-          <table className="table mb-4">
-            <thead><tr><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr></thead>
-            <tbody>
-              {carrito.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.nombre}</td>
-                  <td>${item.precio.toLocaleString("es-CL")}</td>
-                  <td>{item.cantidad}</td>
-                  <td>${(item.precio * item.cantidad).toLocaleString("es-CL")}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="table-responsive">
+            <table className="table mb-4">
+              <thead><tr><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr></thead>
+              <tbody>
+                {carrito.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.nombre}</td>
+                    <td>${item.precio.toLocaleString("es-CL")}</td>
+                    <td>{item.cantidad}</td>
+                    <td>${(item.precio * item.cantidad).toLocaleString("es-CL")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <h5>Información del cliente</h5>
           <div className="row g-3 mb-3">

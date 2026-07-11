@@ -20,7 +20,7 @@ function CompraError() {
           <h3 className="text-danger">❌ No se pudo realizar el pago. nro #{compra.numeroOrden}</h3>
           <p className="text-muted">Detalle de compra</p>
           <button className="btn btn-success btn-lg my-3" onClick={() => navigate("/checkout")}>VOLVER A REALIZAR EL PAGO</button>
-
+        <div className="table-responsive">
           <table className="table my-4 text-start">
             <thead><tr><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr></thead>
             <tbody>
@@ -34,6 +34,7 @@ function CompraError() {
               ))}
             </tbody>
           </table>
+        </div>
 
           <div className="bg-light rounded-3 p-3 fs-5 fw-bold">
             Total pagado: ${compra.total.toLocaleString("es-CL")}

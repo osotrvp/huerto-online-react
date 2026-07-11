@@ -22,6 +22,7 @@ function DetalleOrden() {
           <div className="col-md-4"><label className="small">Correo</label><input className="form-control" disabled value={orden.correo} /></div>
         </div>
         <p className="text-muted">{orden.calle} {orden.depto && `, Depto ${orden.depto}`} — {orden.comuna}, {orden.region}</p>
+      <div className="table-responsive"></div>    
         <table className="table my-3">
           <thead><tr><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr></thead>
           <tbody>

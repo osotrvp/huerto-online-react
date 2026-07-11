@@ -36,6 +36,7 @@ function DetalleUsuario() {
             {ordenes.length === 0 ? (
               <p className="text-muted">Este usuario no tiene compras registradas.</p>
             ) : (
+            <div className="table-responsive">
               <table className="table">
                 <thead><tr><th>N° Orden</th><th>Total</th><th>Fecha</th><th></th></tr></thead>
                 <tbody>
@@ -49,6 +50,7 @@ function DetalleUsuario() {
                   ))}
                 </tbody>
               </table>
+            </div>
             )}
           </div>
         </div>

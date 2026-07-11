@@ -31,19 +31,21 @@ function CompraExitosa() {
           <p className="text-muted">{compra.calle} {compra.depto && `, Depto ${compra.depto}`} — {compra.comuna}, {compra.region}</p>
           {compra.indicaciones && <p className="text-muted small">{compra.indicaciones}</p>}
 
-          <table className="table my-4">
-            <thead><tr><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr></thead>
-            <tbody>
-              {compra.carrito.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.nombre}</td>
-                  <td>${item.precio.toLocaleString("es-CL")}</td>
-                  <td>{item.cantidad}</td>
-                  <td>${(item.precio * item.cantidad).toLocaleString("es-CL")}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="table-responsive">
+            <table className="table my-4">
+              <thead><tr><th>Nombre</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th></tr></thead>
+              <tbody>
+                {compra.carrito.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.nombre}</td>
+                    <td>${item.precio.toLocaleString("es-CL")}</td>
+                    <td>{item.cantidad}</td>
+                    <td>${(item.precio * item.cantidad).toLocaleString("es-CL")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <div className="bg-light rounded-3 p-3 text-center fs-5 fw-bold mb-3">
             Total pagado: ${compra.total.toLocaleString("es-CL")}
